@@ -5,5 +5,10 @@ A simple Japaneseized [Übersicht](http://tracesof.net/uebersicht/) Widget. This
 ## Screenshot
 ![Demo](./screenshot.webp)
 
+## Third Party Libraries
+This widget incorporates and uses the following libraries.
+
+ - [japanese-holidays-js](https://github.com/osamutake/japanese-holidays-js)
+
 ## License
-[CC0 1.0 Universal](./LICENSE)
+ - [CC0 1.0 Universal](./LICENSE)

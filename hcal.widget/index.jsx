@@ -1,11 +1,12 @@
-import { styled } from 'uebersicht';
+import { styled }  from 'uebersicht';
+import { getDays } from './lib/holiday.bundle';
 
-// const days    = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-// const months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+// const months   = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const days    = ['日', '月', '火', '水', '木', '金', '土'];
-const months  = ['睦月', '如月', '弥生', '卯月', '皐月', '水無月', '文月', '葉月', '長月', '神奈月', '霜月', '師走'];
-const offdays = [0, 6];
+const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+const months   = ['睦月', '如月', '弥生', '卯月', '皐月', '水無月', '文月', '葉月', '長月', '神奈月', '霜月', '師走'];
+const offdays  = [0, 6];
 
 export const className = `
     top:         1em;
@@ -104,18 +105,30 @@ export const command = () => {
 }
 
 export const render = () => {
-    const data     = getData();
-    const headline = [];
-    const midline  = [];
-    const daysline = [];
+    const now                  = new Date();
+    const [year, month, toDay] = [now.getFullYear(), now.getMonth(), now.getDate()];
+    const days                 = getDays(year, month);
+    const headline             = [];
+    const midline              = [];
+    const daysline             = [];
 
-    Object.keys(data['days']).forEach(
+    Object.keys(days).forEach(
         (day) => {
-            const toDay      = data['days'][day];
-            const className  = toDay['className'];
-            const dayPerWeek = toDay['dayPerWeek'];
+            const isToday    = Number(day) === toDay;
+            const isOff      = offdays.includes(days[day].dayPerWeek) || days[day].holiday;
+            let   className  = 'ordinary';
 
-            headline.push(<td key = {day} className = {className}>{days[dayPerWeek]}</td>);
+            if (isToday && isOff) {
+                className = 'off-today';
+            } else if (isToday) {
+                className = 'today';
+            } else if (isOff) {
+                className = 'offday';
+            }
+
+            console.log(className);
+
+            headline.push(<td key = {day} className = {className}>{dayNames[days[day].dayPerWeek]}</td>);
             midline.push(<td key = {day} className = {className}/>);
             daysline.push(<td key = {day} className = {className}>{day}</td>);
         }
@@ -123,7 +136,7 @@ export const render = () => {
 
     return (
         <Container>
-            <Title>{data['year']}年 {months[data['month']]}</Title>
+            <Title>{year}年 {months[month]}</Title>
             <table>
                 <tbody>
                     <tr className = 'weekday'>{headline}</tr>
@@ -133,38 +146,4 @@ export const render = () => {
             </table>
         </Container>
     );
-}
-
-const getData = () => {
-    const now                  = new Date();
-    const [year, month, toDay] = [now.getFullYear(), now.getMonth(), now.getDate()];
-    const firstWeekDay         = new Date(year, month, 1).getDay();
-    const lastDay              = new Date(year, month + 1, 0).getDate();
-    const data                 = {};
-
-    data['year']               = year;
-    data['month']              = month;
-    data['days']               = {};
-
-    for (let day = 1, dayPerWeek = firstWeekDay; day <= lastDay; day++, dayPerWeek++) {
-        dayPerWeek      = dayPerWeek % 7;
-        const isToday   = toDay === day;
-        const isOff     = offdays.includes(dayPerWeek);
-        let   className = 'ordinary';
-
-        if (isToday && isOff) {
-            className = 'off-today';
-        } else if (isToday) {
-            className = 'today';
-        } else if (isOff) {
-            className = 'offday';
-        }
-
-        data['days'][day] = {
-            className:  className,
-            dayPerWeek: dayPerWeek,
-        };
-    }
-
-    return data;
 }

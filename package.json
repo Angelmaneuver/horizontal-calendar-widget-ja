@@ -1,0 +1,26 @@
+{
+  "name": "library-for-hcwj",
+  "version": "1.0.0",
+  "author": "Angelmaneuver",
+  "license": "ISC",
+  "description": "Library for hcwj.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Angelmaneuver/horizontal-calendar-widget-ja.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Angelmaneuver/horizontal-calendar-widget-ja/issues"
+  },
+  "homepage": "https://github.com/Angelmaneuver/horizontal-calendar-widget-ja#readme",
+  "scripts": {
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "japanese-holidays": "^1.0.10"
+  },
+  "devDependencies": {
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
