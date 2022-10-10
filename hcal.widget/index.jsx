@@ -8,8 +8,9 @@ const months  = ['睦月', '如月', '弥生', '卯月', '皐月', '水無月', 
 const offdays = [0, 6];
 
 export const className = `
-    bottom:      9em;
-    left:        8em;
+    top:         1em;
+    left:        1em;
+    z-index:     99999999;
     font-family: Helvetica Neue;
     font-size:   11px;
     font-weight: 500;
