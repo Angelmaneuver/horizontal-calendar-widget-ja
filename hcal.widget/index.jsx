@@ -126,8 +126,6 @@ export const render = () => {
                 className = 'offday';
             }
 
-            console.log(className);
-
             headline.push(<td key = {day} className = {className}>{dayNames[days[day].dayPerWeek]}</td>);
             midline.push(<td key = {day} className = {className}/>);
             daysline.push(<td key = {day} className = {className}>{day}</td>);
