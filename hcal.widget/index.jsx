@@ -66,6 +66,7 @@ export const className = `
     .midline .off-today {
         background: rgba(255,204,51,.8);
     }
+
     .offday, .off-today {
         color: rgba(255,119,119,1);
     }
@@ -85,26 +86,33 @@ const Title = styled('div')(props => ({
     textTransform: 'uppercase',
 }));
 
-let executed = false;
+export const refreshFrequency = false;
 
-export let refreshFrequency = (() => {
-    const now     = new Date();
-    const seconds = 60 - now.getSeconds();
-    const minutes = 60 - now.getMinutes() - (0 !== seconds ? 1 : 0);
-    const hours   = 24 - now.getHours() - (0 !== minutes ? 1 : 0);
+export const command          = undefined;
 
-    return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
-})();
-
-export const command = () => {
-    if (executed) {
-        refreshFrequency = 24 * 60 * 60 * 1000;
-    } else {
-        executed = true;
-    }
+export const init             = (dispatch) => {
+	setTimeout(
+        () => { dispatch({}); setInterval(({}) => dispatch(), 24 * 60 * 60 * 1000); },
+        (() => {
+            const now     = new Date();
+            const seconds = 60 - now.getSeconds();
+            const minutes = 60 - now.getMinutes() - (0 !== seconds ? 1 : 0);
+            const hours   = 24 - now.getHours() - (0 !== minutes ? 1 : 0);
+        
+            return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
+        })()
+	);
 }
 
-export const render = () => {
+export const updateState      = (event, previousState) => {
+	if (event.error) {
+		return { ...previousState, warning: `We got an error: ${event.error}` };
+	}
+
+	return { ...previousState };
+}
+
+export const render           = () => {
     const now                  = new Date();
     const [year, month, toDay] = [now.getFullYear(), now.getMonth(), now.getDate()];
     const days                 = getDays(year, month);
