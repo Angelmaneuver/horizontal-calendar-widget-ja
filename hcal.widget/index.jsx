@@ -92,13 +92,19 @@ export const command          = undefined;
 
 export const init             = (dispatch) => {
 	setTimeout(
-        () => { dispatch({}); setInterval(({}) => dispatch(), 24 * 60 * 60 * 1000); },
+        () => {
+            dispatch({});
+            setInterval(
+                () => { dispatch({}); },
+                24 * 60 * 60 * 1000
+            );
+        },
         (() => {
             const now     = new Date();
             const seconds = 60 - now.getSeconds();
-            const minutes = 60 - now.getMinutes() - (0 !== seconds ? 1 : 0);
-            const hours   = 24 - now.getHours() - (0 !== minutes ? 1 : 0);
-        
+            const minutes = 60 - (now.getMinutes() + (0 !== seconds ? 1 : 0));
+            const hours   = 24 - (now.getHours()   + (0 !== minutes ? 1 : 0));
+
             return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
         })()
 	);
